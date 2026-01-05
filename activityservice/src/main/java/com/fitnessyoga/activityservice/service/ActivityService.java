@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ActivityService {
@@ -24,9 +27,8 @@ public class ActivityService {
                 .additionalMetrics(request.getAdditionalMetrics())
                 .build();
 
-        //console.log(activity);
-        Activity saveedActivity = activityRepository.save(activity);
-        return mapToResponse(saveedActivity);
+        Activity savedActivity = activityRepository.save(activity);
+        return mapToResponse(savedActivity);
     }
 
     private  ActivityResponse mapToResponse(Activity activity){
@@ -36,12 +38,26 @@ public class ActivityService {
         response.setType(activity.getType());
         response.setDuration(activity.getDuration());
         response.setCaloriesBurned(activity.getCaloriesBurned());
-        response.setStartTime(response.getStartTime());
-        response.setAdditionalMetrics(response.getAdditionalMetrics());
+        response.setStartTime(activity.getStartTime());
+        response.setAdditionalMetrics(activity.getAdditionalMetrics());
         response.setCreatedAt(activity.getCreatedAt());
         response.setUpdatedAt(activity.getUpdatedAt());
-        System.out.println(response);
+        //System.out.println(response);
         return  response;
 
+    }
+
+    public List<ActivityResponse> getUserActivities(String userId) {
+        List<Activity> activities = activityRepository.findByUserId(userId);
+        return activities.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+
+    public ActivityResponse getActivityById(String activityId) {
+        return activityRepository.findById(activityId)
+                .map(this::mapToResponse)
+                .orElseThrow(() -> new RuntimeException("Activity not found with Id: "+activityId));
     }
 }
