@@ -70,7 +70,7 @@ public class ActivityService {
         response.setAdditionalMetrics(activity.getAdditionalMetrics());
         response.setCreatedAt(activity.getCreatedAt());
         response.setUpdatedAt(activity.getUpdatedAt());
-        //System.out.println(response);
+        System.out.println(response);
         return  response;
 
     }
