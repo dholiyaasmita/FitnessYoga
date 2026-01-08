@@ -56,7 +56,7 @@ public class ActivityAIService {
 
             List<String> suggestions = extractSuggestions(analysisJson.path("suggestions"));
 
-            List<String> safety = extractSafetyGuidlines(analysisJson.path("safety"));
+            List<String> safety = extractSafeyGuidlines(analysisJson.path("safety"));
 
             return Recommendation.builder()
                     .activityId(activity.getId())
@@ -91,7 +91,7 @@ public class ActivityAIService {
                 .build();
     }
 
-    private List<String> extractSafetyGuidlines(JsonNode safetyNode) {
+    private List<String> extractSafeyGuidlines(JsonNode safetyNode) {
         List<String> safety = new ArrayList<>();
         if (safetyNode.isArray()) {
             safetyNode.forEach(item -> safety.add(item.asString()));
