@@ -1,23 +1,25 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import React, { Activity, useState } from 'react'
+import React, { useState } from 'react'
+import { addActivity } from '../services/api'
 
 
-const ActivityForm = (onActivitesAdded) => {
+const ActivityForm = ({ onActivityAdded }) => {
 
     const [activity, setActivity] = useState({
         type: "RUNNING", duration: '', caloriesBurned: '',
         additionalMetrics: {} 
-    })
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-           // await addActivity(activity);
-            onActivityAddded();
+            await addActivity(activity);
+            console.log(typeof onActivityAdded);
+            onActivityAdded();
             setActivity({ type: "RUNNING", duration: '', caloriesBurned: ''});
 
         }catch(error){
-
+            console.error(error);
         }
     }
 
